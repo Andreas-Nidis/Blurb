@@ -1,15 +1,22 @@
-import { StyleSheet, Text, View, Button } from 'react-native';
-import { useState } from 'react';
+import { Animated, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { useState, useEffect, useRef } from 'react';
 
 export function PromptArea() {
-    const [prompt, setPrompt] = useState("Tap to get a prompt!");
+    const [prompt, setPrompt] = useState("");
+    const opacity = useRef(new Animated.Value(1)).current;
+
+    useEffect(() => {
+      // Set initial prompt
+      const initialPrompt = prompts[Math.floor(Math.random() * prompts.length)];
+      setPrompt(initialPrompt);
+    }, []);
     // Array of prompts
     const prompts = [
         "Pick out a book you think the other person would find interesting.",
         "Pick out a book you think the other person would find boring.",
         "Pick out a book you think the other person would find confusing.",
         "Pick out a book you think the other person would find relatable.",
-        "Pick out a book you think would represent the other person's personality.",
+        "Pick out a book you think would represents the other person's personality.",
         "Pick out a book you would like to know what the other person's thoughts and feelings about.",
         "Pick out a book you think represents the other persons aesthetic.",
         "Pick out a book which has a title that fits the other person (like their slogan).",
@@ -25,42 +32,81 @@ export function PromptArea() {
         "Pick out a book you think represents the other person's biggest weakness.",
         "Pick out a book you think represents the other person's biggest challenge.",
         "Pick out a book you think represents the other person's biggest opportunity.",
-        "Pick out a book that represent what you would like to see the other person do next.",
-        "Pick out a book that represent what you would like to see the other person achieve.",
-        "Pick out a book that represent what you would like to see the other person change.",
-        "Pick out a book that represent what you would like to see the other person learn."
+        "Pick out a book that represents what you would like to see the other person do next.",
+        "Pick out a book that represents what you would like to see the other person achieve.",
+        "Pick out a book that represents what you would like to see the other person change.",
+        "Pick out a book that represents what you would like to see the other person learn."
     ];
     // Randomly select a prompt from the array
     const onPress = () => {
+      Animated.timing(opacity, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start(() => {
         const randomPrompt = prompts[Math.floor(Math.random() * prompts.length)];
         setPrompt(randomPrompt);
+
+        Animated.timing(opacity, {
+          toValue: 1,
+          duration: 300,
+          useNativeDriver: true,
+        }).start();
+      })
     };
 
     return (
         <View style={styles.container}>
+          <Animated.View style={{ opacity }}>
             <Text style={styles.prompt}>{prompt}</Text>
-            <Button style={styles.button} onPress={onPress} title="Next Prompt" />
+          </Animated.View>
+          <TouchableOpacity style={styles.button} onPress={onPress}>
+              <Text style={styles.buttonText}>Next Prompt</Text>
+          </TouchableOpacity>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+      flex: 1,
+      backgroundColor: '#FFDEAD',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     button: {
-        backgroundColor: '#007BFF',
-        padding: 10,
-        borderRadius: 5,
-        marginBottom: 20,
+      backgroundColor: '#D6A692',
+      paddingVertical: 14,
+      paddingHorizontal: 24,
+      borderRadius: 12,
+      marginTop: 20,
+      shadowColor: '#000',
+      shadowOffset: { height: 2, width: 0 }, // IOS
+      shadowOpacity: 0.2, // IOS
+      shadowRadius: 4, //IOS
+      elevation: 3, // Android
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    buttonText: {
+      color: '#fff',
+      fontSize: 14,
+      fontFamily: 'Arial',
+      fontWeight: 'bold',
+      textAlign: 'center',
+      letterSpacing: 0.5,
     },
     prompt: {
-        fontSize: 18,
-        textAlign: 'center',
-        marginBottom: 20,
+      color: '#4A4A4A',
+      maxWidth: 320,
+      letterSpacing: 0.3,
+      fontSize: 20,
+      lineHeight: 28,
+      fontWeight: 'bold',
+      fontFamily: 'Libre Baskerville',
+      textAlign: 'center',
+      marginBottom: 20,
+      padding: 10,
     },
 });
 

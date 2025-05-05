@@ -7,24 +7,29 @@ export function TitleBlock() {
             <Text style={styles.subtitle}>Judged by the Cover</Text>
         </View>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginVertical: 20,
+      color: '#4A4A4A',
+      letterSpacing: 0.3,
+      fontSize: 24,
+      fontFamily: 'LibreBaskerville',
+      fontWeight: 'bold',
+      textAlign: 'center',
+      marginVertical: 20,
     },
     subtitle: {
-        fontSize: 18,
-        textAlign: 'center',
-        marginBottom: 20,
+      color: '#4A4A4A',
+      fontSize: 18,
+      fontFamily: 'LibreBaskerville',
+      textAlign: 'center',
+      marginBottom: 20,
     },
 });
 
