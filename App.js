@@ -27,17 +27,14 @@ export default function App() {
   }
 
   return (
-    <View style={hasStarted ? styles.container2 : styles.container1}>
+    <View style={{flex: 1}}>
       {hasStarted ? 
-      <PromptArea />
+      <PromptArea style={styles.container2} />
       : 
-      <View style={styles.container}>
-        <TouchableOpacity 
-          style={styles.button} 
-          onPress={() => setHasStarted(true)}>
-            <TitleBlock style={styles.title} />
+      <View style={styles.container1}>
+        <TouchableOpacity onPress={() => setHasStarted(true)}>
+            <TitleBlock />
         </TouchableOpacity>
-        <Text>Press the title to continue!</Text>
       </View>}
     </View>
   );
@@ -56,25 +53,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  button: {
-    maxHeight: 800,
-    backgroundColor: '#FFDEAD',
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: { height: 2, width: 0 }, // IOS
-    shadowOpacity: 0.4, // IOS
-    shadowRadius: 4, //IOS
-    elevation: 3, // Android
-    justifyContent: 'center',
-    alignItems: 'center',
-    },
-    caption: {
-      color: '#fff',
-      fontSize: 12,
-      letterSpacing: 3,
-      marginBottom: 50,
-    }
 });
 

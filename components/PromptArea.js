@@ -1,7 +1,7 @@
 import { Animated, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { useState, useEffect, useRef } from 'react';
 
-export function PromptArea() {
+export function PromptArea(props) {
     const [prompt, setPrompt] = useState("");
     const opacity = useRef(new Animated.Value(1)).current;
 
