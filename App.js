@@ -13,6 +13,7 @@ const loadFonts = () => {
 export default function App() {
   const [hasStarted, setHasStarted] = useState(false);
   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [useTimer, setUseTimer] = useState(false);
 
   useEffect(() => {
     loadFonts().then(() => setFontsLoaded(true));
@@ -29,11 +30,17 @@ export default function App() {
   return (
     <View style={{flex: 1}}>
       {hasStarted ? 
-      <PromptArea style={styles.container2} />
+      <PromptArea 
+        style={styles.container2} 
+        useTimer={useTimer}
+      />
       : 
       <View style={styles.container1}>
         <TouchableOpacity onPress={() => setHasStarted(true)}>
-            <TitleBlock />
+            <TitleBlock 
+              setUseTimer={setUseTimer} 
+              useTimer={useTimer}
+            />
         </TouchableOpacity>
       </View>}
     </View>

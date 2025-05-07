@@ -1,7 +1,7 @@
 import { Animated, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { useState, useEffect, useRef } from 'react';
 
-export function PromptArea({ useTimer, durationInMinutes }) {
+export function PromptArea({ useTimer }) {
     const [prompt, setPrompt] = useState('');
     const [secondsLeft, setSecondsLeft] = useState(0);
     const intervalRef = useRef(null);
