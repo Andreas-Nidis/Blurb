@@ -3,8 +3,8 @@ import { useState } from 'react';
 
 export function Timer() {
   const [useTimer, setUseTimer] = useState(false);
-  const [n, setN] = useState(0);
-  const time = ['1:00', '3:00', '5:00'];
+  const [timeIndex, setTimeIndex] = useState(0);
+  const timeOptions = [1, 3, 5];
 
   return (
     <View style={styles.overview}>
@@ -13,8 +13,8 @@ export function Timer() {
         <TouchableOpacity style={[styles.button, {backgroundColor: 'green'}]} onPress={() => setUseTimer(!useTimer)}>
           <Text style={styles.showText}>Timer On</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, {backgroundColor: 'white'}]} onPress={() => setN((prev) => (prev + 1) % time.length)}>
-          <Text style={[styles.showText, {color: 'black'}]}>{time[n]}</Text>
+        <TouchableOpacity style={[styles.button, {backgroundColor: 'white'}]} onPress={() => setTimeIndex((prev) => (prev + 1) % timeOptions.length)}>
+          <Text style={[styles.showText, {color: 'black'}]}>{timeOptions[timeIndex]}:00</Text>
         </TouchableOpacity>
       </View>
       :

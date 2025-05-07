@@ -1,15 +1,42 @@
 import { Animated, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { useState, useEffect, useRef } from 'react';
 
-export function PromptArea(props) {
-    const [prompt, setPrompt] = useState("");
+export function PromptArea({ useTimer, durationInMinutes }) {
+    const [prompt, setPrompt] = useState('');
+    const [secondsLeft, setSecondsLeft] = useState(0);
+    const intervalRef = useRef(null);
     const opacity = useRef(new Animated.Value(1)).current;
 
+    const startCountdown = (durationInSeconds) => {
+      clearInterval(intervalRef.current);
+      setSecondsLeft(durationInSeconds);
+
+      intervalRef.current = setInterval(() => {
+        setSecondsLeft((prev) => {
+          if (prev <= 1) {
+            clearInterval(intervalRef.current);
+            return 0;
+          }
+          return prev - 1;
+        })
+      }, 1000)
+    }
+
     useEffect(() => {
-      // Set initial prompt
       const initialPrompt = prompts[Math.floor(Math.random() * prompts.length)];
       setPrompt(initialPrompt);
-    }, []);
+      if (useTimer && durationInMinutes) {
+        startCountdown(durationInMinutes * 60);
+      }
+      return () => clearInterval(intervalRef.current);
+    }, [useTimer, durationInMinutes]);
+
+    const formatTime = (sec) => {
+      const minutes = Math.floor(sec / 60);
+      const seconds = sec % 60;
+      return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    };
+
     // Array of prompts
     const prompts = [
         "Pick out a book you think the other person would find interesting.",
@@ -59,6 +86,9 @@ export function PromptArea(props) {
         <View style={styles.container}>
           <Animated.View style={{ opacity }}>
             <Text style={styles.prompt}>{prompt}</Text>
+            {useTimer && secondsLeft > 0 && (
+              <Text style={styles.timerText}>{formatTime(secondsLeft)}</Text>
+            )}
           </Animated.View>
           <TouchableOpacity style={styles.button} onPress={onPress}>
               <Text style={styles.buttonText}>Next Prompt</Text>
@@ -68,46 +98,51 @@ export function PromptArea(props) {
 };
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#FFDEAD',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    button: {
-      backgroundColor: '#D6A692',
-      paddingVertical: 14,
-      paddingHorizontal: 24,
-      borderRadius: 12,
-      marginTop: 20,
-      shadowColor: '#000',
-      shadowOffset: { height: 2, width: 0 }, // IOS
-      shadowOpacity: 0.2, // IOS
-      shadowRadius: 4, //IOS
-      elevation: 3, // Android
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    buttonText: {
-      color: '#fff',
-      fontSize: 14,
-      fontFamily: 'Arial',
-      fontWeight: 'bold',
-      textAlign: 'center',
-      letterSpacing: 0.5,
-    },
-    prompt: {
-      color: '#4A4A4A',
-      maxWidth: 320,
-      letterSpacing: 0.3,
-      fontSize: 20,
-      lineHeight: 28,
-      fontWeight: 'bold',
-      fontFamily: 'Libre Baskerville',
-      textAlign: 'center',
-      marginBottom: 20,
-      padding: 10,
-    },
+  container: {
+    flex: 1,
+    backgroundColor: '#FFDEAD',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  button: {
+    backgroundColor: '#D6A692',
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+    borderRadius: 12,
+    marginTop: 20,
+    shadowColor: '#000',
+    shadowOffset: { height: 2, width: 0 }, // IOS
+    shadowOpacity: 0.2, // IOS
+    shadowRadius: 4, //IOS
+    elevation: 3, // Android
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontFamily: 'Arial',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    letterSpacing: 0.5,
+  },
+  prompt: {
+    color: '#4A4A4A',
+    maxWidth: 320,
+    letterSpacing: 0.3,
+    fontSize: 20,
+    lineHeight: 28,
+    fontWeight: 'bold',
+    fontFamily: 'Libre Baskerville',
+    textAlign: 'center',
+    marginBottom: 20,
+    padding: 10,
+  },
+  timerText: {
+    fontSize: 20,
+    color: '#7a2d55', // dusty plum
+    marginVertical: 10,
+  },
 });
 
 export default PromptArea
