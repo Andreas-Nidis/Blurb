@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { HowToPlay } from './HowToPlay.js';
 import { Timer } from './Timer.js';
 
-export function TitleBlock({ setUseTimer, useTimer }) {
+export function TitleBlock({ setUseTimer, useTimer, setDurationInMinutes }) {
   const [modalVisible, setModalVisible] = useState(false);
   
   return (
@@ -20,6 +20,7 @@ export function TitleBlock({ setUseTimer, useTimer }) {
           <Timer 
             setUseTimer={setUseTimer} 
             useTimer={useTimer}
+            setDurationInMinutes={setDurationInMinutes}
         />
         </TouchableOpacity>
       </View>

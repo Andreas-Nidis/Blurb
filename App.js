@@ -2,44 +2,28 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { TitleBlock } from './components/TitleBlock';
 import { useState } from 'react';
 import { PromptArea } from './components/PromptArea';
-import * as Font from 'expo-font';
-
-const loadFonts = () => {
-  return Font.loadAsync({
-    'LibreBaskerville': require('./assets/fonts/LibreBaskerville-Regular.ttf'),
-  });
-};
 
 export default function App() {
   const [hasStarted, setHasStarted] = useState(false);
-  const [fontsLoaded, setFontsLoaded] = useState(false);
   const [useTimer, setUseTimer] = useState(false);
-
-  useEffect(() => {
-    loadFonts().then(() => setFontsLoaded(true));
-  }, []);
-  
-  if (!fontsLoaded) {
-    return (
-      <View>
-        <Text>Loading fonts...</Text>
-      </View> // or a loading screen
-    )
-  }
+  const [durationInMinutes, setDurationInMinutes] = useState(0);
 
   return (
     <View style={{flex: 1}}>
       {hasStarted ? 
       <PromptArea 
-        style={styles.container2} 
+        style={styles.container2}
         useTimer={useTimer}
+        durationInMinutes={durationInMinutes}
+        setHasStarted={setHasStarted}
       />
       : 
       <View style={styles.container1}>
         <TouchableOpacity onPress={() => setHasStarted(true)}>
-            <TitleBlock 
-              setUseTimer={setUseTimer} 
+            <TitleBlock
+              setUseTimer={setUseTimer}
               useTimer={useTimer}
+              setDurationInMinutes={setDurationInMinutes}
             />
         </TouchableOpacity>
       </View>}

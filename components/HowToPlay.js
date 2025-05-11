@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   button: {
-    backgroundColor: 'gray',
+    backgroundColor: '#FAF9F6',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   showText: {
     padding: 5,
     margin: 5,
-    color:'#fff',
+    color:'black',
   }
 })
 

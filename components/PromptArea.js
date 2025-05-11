@@ -1,7 +1,7 @@
 import { Animated, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { useState, useEffect, useRef } from 'react';
 
-export function PromptArea({ useTimer, durationInMinutes }) {
+export function PromptArea({ useTimer, durationInMinutes, setHasStarted }) {
     const [prompt, setPrompt] = useState('');
     const [secondsLeft, setSecondsLeft] = useState(0);
     const intervalRef = useRef(null);
@@ -29,7 +29,7 @@ export function PromptArea({ useTimer, durationInMinutes }) {
         startCountdown(durationInMinutes * 60);
       }
       return () => clearInterval(intervalRef.current);
-    }, [prompt, useTimer, durationInMinutes]);
+    }, [useTimer, durationInMinutes]);
 
     const formatTime = (sec) => {
       const minutes = Math.floor(sec / 60);
@@ -74,6 +74,10 @@ export function PromptArea({ useTimer, durationInMinutes }) {
         const randomPrompt = prompts[Math.floor(Math.random() * prompts.length)];
         setPrompt(randomPrompt);
 
+        if (useTimer && durationInMinutes) {
+          startCountdown(durationInMinutes * 60);
+        }
+
         Animated.timing(opacity, {
           toValue: 1,
           duration: 300,
@@ -84,15 +88,18 @@ export function PromptArea({ useTimer, durationInMinutes }) {
 
     return (
         <View style={styles.container}>
-          <Animated.View style={[{ opacity }, styles.view]}>
-            <Text style={styles.prompt}>{prompt}</Text>
-            {useTimer && secondsLeft > -1 && (
-              <Text style={styles.timerText}>{formatTime(secondsLeft)}</Text>
-            )}
-          </Animated.View>
-          <TouchableOpacity style={styles.button} onPress={onPress}>
-              <Text style={styles.buttonText}>Next Prompt</Text>
-          </TouchableOpacity>
+            <Animated.View style={[{ opacity }, styles.view]}>
+                <Text style={styles.prompt}>{prompt}</Text>
+                {useTimer && secondsLeft > -1 && (
+                <Text style={styles.timerText}>{formatTime(secondsLeft)}</Text>
+                )}
+            </Animated.View>
+            <TouchableOpacity style={styles.button} onPress={onPress}>
+                <Text style={styles.buttonText}>Next Prompt</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => setHasStarted(false)}>
+                <Text style={styles.buttonText}>Home Screen</Text>
+            </TouchableOpacity>
         </View>
     );
 };
