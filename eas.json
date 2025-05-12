@@ -1,0 +1,18 @@
+{
+    "cli": {
+      "version": ">= 16.0.0"
+    },
+    "build": {
+      "production": {
+        "distribution": "store",
+        "channel": "production",
+        "android": {
+          "buildType": "app-bundle"
+        },
+        "ios": {
+          "image": "latest"
+        }
+      }
+    }
+  }
+  
