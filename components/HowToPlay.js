@@ -58,7 +58,7 @@ export function HowToPlay(props) {
 
 const styles = StyleSheet.create({
   overview: {
-    flex: 1,
+    // flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },

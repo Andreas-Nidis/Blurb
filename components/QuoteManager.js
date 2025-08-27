@@ -1,6 +1,6 @@
 // components/QuoteManager.js
-import { View, Text, StyleSheet, Animated } from 'react-native';
-import { useEffect, useState } from 'react';
+import { View, Text, Animated, StyleSheet } from 'react-native';
+import { useState, useEffect, useRef } from 'react';
 import * as Haptics from 'expo-haptics';
 
 const QUOTES = [
@@ -15,38 +15,54 @@ const QUOTES = [
 ];
 
 export function QuoteManager() {
-  const [currentQuote, setCurrentQuote] = useState({ text: '', author: '' });
-  const [fadeAnim] = useState(new Animated.Value(0));
+  const [currentQuote, setCurrentQuote] = useState(() => {
+    // Select a random quote when the component first mounts
+    const randomIndex = Math.floor(Math.random() * QUOTES.length);
+    return QUOTES[randomIndex];
+  });
+  
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const pulseAnim = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
-    changeQuote();
-  }, []);
+    // Start the pulsing animation
+    const pulseAnimation = Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnim, {
+          toValue: 1.03,
+          duration: 1500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulseAnim, {
+          toValue: 1,
+          duration: 1500,
+          useNativeDriver: true,
+        })
+      ])
+    );
+    pulseAnimation.start();
 
-  const changeQuote = () => {
-    // Fade out
+    // Fade in the initial quote
     Animated.timing(fadeAnim, {
-      toValue: 0,
-      duration: 500,
+      toValue: 1,
+      duration: 1200,
       useNativeDriver: true,
-    }).start(() => {
-      // Select random quote
-      const randomIndex = Math.floor(Math.random() * QUOTES.length);
-      setCurrentQuote(QUOTES[randomIndex]);
-      
-      // Fade in
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: true,
-      }).start();
-      
-      // Gentle haptic feedback
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    });
-  };
+    }).start();
+
+    // Gentle haptic feedback
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+
+    // Clean up function
+    return () => {
+      pulseAnimation.stop();
+    };
+  }, []); // Empty dependency array means this runs only once on mount
 
   return (
-    <Animated.View style={[styles.quoteContainer, { opacity: fadeAnim }]}>
+    <Animated.View style={[styles.quoteContainer, { 
+      opacity: fadeAnim, 
+      transform: [{ scale: pulseAnim }] 
+    }]}>
       <Text style={styles.quoteText}>"{currentQuote.text}"</Text>
       <Text style={styles.quoteAuthor}>— {currentQuote.author}</Text>
     </Animated.View>
@@ -55,8 +71,8 @@ export function QuoteManager() {
 
 const styles = StyleSheet.create({
   quoteContainer: {
-    marginBottom: 30,
-    paddingHorizontal: 20,
+    marginTop: 5,
+    marginBottom: 50,
     alignItems: 'center',
   },
   quoteText: {
@@ -66,11 +82,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 8,
     fontFamily: 'LibreBaskerville',
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
   },
   quoteAuthor: {
     color: '#FFDEAD',
     fontSize: 14,
     textAlign: 'center',
     fontFamily: 'LibreBaskerville',
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
   },
 });

@@ -1,45 +1,49 @@
 // components/TitleBlock.js
-import { StyleSheet, Text, View, TouchableOpacity, Animated, Easing } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Animated } from 'react-native';
 import { useState, useEffect, useRef } from 'react';
 import { HowToPlay } from './HowToPlay.js';
 import { Timer } from './Timer.js';
 import { QuoteManager } from './QuoteManager.js';
+import { EnhancedBackground } from './EnhancedBackground.js'; // Import the new background
 
 export function TitleBlock({ setUseTimer, useTimer, setDurationInMinutes, onStart }) {
   const [modalVisible, setModalVisible] = useState(false);
-  const pulseAnim = useRef(new Animated.Value(1)).current;
+  const titleAnim = useRef(new Animated.Value(0)).current;
   
   useEffect(() => {
-    // Create pulsing animation for the title
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(pulseAnim, {
-          toValue: 1.05,
-          duration: 1000,
-          easing: Easing.inOut(Easing.ease),
-          useNativeDriver: true,
-        }),
-        Animated.timing(pulseAnim, {
-          toValue: 1,
-          duration: 1000,
-          easing: Easing.inOut(Easing.ease),
-          useNativeDriver: true,
-        })
-      ])
-    ).start();
-  }, [pulseAnim]);
+    // Animate title in
+    Animated.timing(titleAnim, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
+  }, []);
 
   return (
     <View style={styles.overview}>
-      {/* Quote display at the top */}
-      <QuoteManager />
+      {/* Enhanced Background */}
+      <EnhancedBackground />
       
-      {/* Pulsing title */}
-      <TouchableOpacity onPress={onStart}>
-        <Animated.View style={[styles.container, { transform: [{ scale: pulseAnim }] }]}>
-          <Text style={styles.title}>Blurb</Text>
-          <Text style={styles.subtitle}>Judged by the Cover</Text>
-        </Animated.View>
+      {/* Title section - not tappable */}
+      <Animated.View style={[styles.titleContainer, { 
+        opacity: titleAnim, 
+        transform: [{ 
+          translateY: titleAnim.interpolate({
+            inputRange: [0, 1],
+            outputRange: [20, 0]
+          })
+        }] 
+      }]}>
+        <Text style={styles.title}>Blurb</Text>
+        <Text style={styles.subtitle}>Judged by the Cover</Text>
+      </Animated.View>
+
+      {/* Quote display at the top with pulsing effect */}
+      <QuoteManager />
+
+      {/* Play button - separate from title */}
+      <TouchableOpacity onPress={onStart} style={styles.playButton}>
+        <Text style={styles.playButtonText}>Begin Adventure</Text>
       </TouchableOpacity>
 
       {/* Buttons container */}
@@ -67,14 +71,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#752730',
+    paddingHorizontal: 20,
+    overflow: 'hidden', // Important for the background
   },
-  container: {
-    maxHeight: 100,
+  titleContainer: {
+    flexDirection: 'column',
+    marginBottom: 20,
     backgroundColor: '#FFDEAD',
     padding: 20,
     borderRadius: 10,
-    marginBottom: 30,
+    marginBottom: 10,
     shadowColor: '#000',
     shadowOffset: { height: 4, width: 0 },
     shadowOpacity: 0.3,
@@ -84,6 +90,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 2,
     borderColor: '#8C3A46',
+    width: '100%',
+    maxWidth: 300,
   },
   title: {
     color: '#4A4A4A',
@@ -92,7 +100,7 @@ const styles = StyleSheet.create({
     fontFamily: 'LibreBaskerville',
     fontWeight: 'bold',
     textAlign: 'center',
-    marginVertical: 10,
+    marginVertical: 5,
     textShadowColor: 'rgba(0, 0, 0, 0.2)',
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 2,
@@ -102,14 +110,31 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'LibreBaskerville',
     textAlign: 'center',
-    marginBottom: 10,
+    marginBottom: 5,
+  },
+  playButton: {
+    backgroundColor: '#FAF9F6',
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 30,
+    marginBottom: 30,
+    shadowColor: '#000',
+    shadowOffset: { height: 4, width: 0 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 5,
+  },
+  playButtonText: {
+    color: '#4A4A4A',
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   buttonContainer: {
-    maxHeight: 100,
-    alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-around',
-    width: '80%',
+    width: '100%',
+    maxWidth: 300,
     marginTop: 20,
   },
   bookStack: {
