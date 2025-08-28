@@ -1,60 +1,69 @@
 // components/TitleBlock.js
-import { StyleSheet, Text, View, TouchableOpacity, Animated } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Animated, Text } from 'react-native';
 import { useState, useEffect, useRef } from 'react';
 import { HowToPlay } from './HowToPlay.js';
 import { Timer } from './Timer.js';
 import { QuoteManager } from './QuoteManager.js';
-import { EnhancedBackground } from './EnhancedBackground.js'; // Import the new background
+import { BookCoverBackground } from './BookCoverBackground.js';
+import { BookmarkRibbon } from './BookmarkRibbon.js'; // Import the new bookmark title
 
 export function TitleBlock({ setUseTimer, useTimer, setDurationInMinutes, onStart }) {
   const [modalVisible, setModalVisible] = useState(false);
-  const titleAnim = useRef(new Animated.Value(0)).current;
+  const contentAnim = useRef(new Animated.Value(0)).current;
   
   useEffect(() => {
-    // Animate title in
-    Animated.timing(titleAnim, {
-      toValue: 1,
-      duration: 1000,
-      useNativeDriver: true,
-    }).start();
+    // Animate content in after bookmark drops
+    setTimeout(() => {
+      Animated.timing(contentAnim, {
+        toValue: 1,
+        duration: 800,
+        useNativeDriver: true,
+      }).start();
+    }, 1000);
   }, []);
 
   return (
     <View style={styles.overview}>
-      {/* Enhanced Background */}
-      <EnhancedBackground />
+      {/* Book Cover Background */}
+      <BookCoverBackground />
       
-      {/* Title section - not tappable */}
-      <Animated.View style={[styles.titleContainer, { 
-        opacity: titleAnim, 
-        transform: [{ 
-          translateY: titleAnim.interpolate({
-            inputRange: [0, 1],
-            outputRange: [20, 0]
-          })
-        }] 
-      }]}>
-        <Text style={styles.title}>Blurb</Text>
-        <Text style={styles.subtitle}>Judged by the Cover</Text>
+      {/* Bookmark Title that drops from top */}
+      <BookmarkRibbon />
+      
+      {/* Quote display */}
+      <Animated.View style={{ 
+        opacity: contentAnim, 
+        transform: [{ translateY: contentAnim.interpolate({
+          inputRange: [0, 1],
+          outputRange: [20, 0]
+        })}] 
+      }}>
+        <QuoteManager />
       </Animated.View>
+      
+      {/* Main content container */}
+      <Animated.View style={[styles.contentContainer, { 
+        opacity: contentAnim,
+        transform: [{ translateY: contentAnim.interpolate({
+          inputRange: [0, 1],
+          outputRange: [30, 0]
+        })}] 
+      }]}>
+        {/* Play button */}
+        <TouchableOpacity onPress={onStart} style={styles.playButton}>
+          <Text style={styles.playButtonText}>Begin Adventure</Text>
+        </TouchableOpacity>
 
-      {/* Quote display at the top with pulsing effect */}
-      <QuoteManager />
-
-      {/* Play button - separate from title */}
-      <TouchableOpacity onPress={onStart} style={styles.playButton}>
-        <Text style={styles.playButtonText}>Begin Adventure</Text>
-      </TouchableOpacity>
-
-      {/* Buttons container */}
-      <View style={styles.buttonContainer}>
-        <HowToPlay modalVisible={modalVisible} setModalVisible={setModalVisible} />
-        <Timer 
-          setUseTimer={setUseTimer} 
-          useTimer={useTimer}
-          setDurationInMinutes={setDurationInMinutes}
-        />
-      </View>
+        {/* Buttons container */}
+        <View style={styles.buttonContainer}>
+          <HowToPlay modalVisible={modalVisible} setModalVisible={setModalVisible} />
+          <Timer 
+            setUseTimer={setUseTimer} 
+            useTimer={useTimer}
+            setDurationInMinutes={setDurationInMinutes}
+          />
+        </View>
+      </Animated.View>
       
       {/* Decorative elements */}
       <View style={styles.bookStack}>
@@ -72,48 +81,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
-    overflow: 'hidden', // Important for the background
+    overflow: 'hidden',
   },
-  titleContainer: {
-    flexDirection: 'column',
-    marginBottom: 20,
-    backgroundColor: '#FFDEAD',
-    padding: 20,
-    borderRadius: 10,
-    marginBottom: 10,
-    shadowColor: '#000',
-    shadowOffset: { height: 4, width: 0 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    elevation: 5,
-    justifyContent: 'center',
+  contentContainer: {
     alignItems: 'center',
-    borderWidth: 2,
-    borderColor: '#8C3A46',
-    width: '100%',
-    maxWidth: 300,
-  },
-  title: {
-    color: '#4A4A4A',
-    letterSpacing: 0.3,
-    fontSize: 32,
-    fontFamily: 'LibreBaskerville',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginVertical: 5,
-    textShadowColor: 'rgba(0, 0, 0, 0.2)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 2,
-  },
-  subtitle: {
-    color: '#4A4A4A',
-    fontSize: 20,
-    fontFamily: 'LibreBaskerville',
-    textAlign: 'center',
-    marginBottom: 5,
+    marginTop: 20,
   },
   playButton: {
-    backgroundColor: '#FAF9F6',
+    backgroundColor: '#4A8A5F',
     paddingVertical: 15,
     paddingHorizontal: 30,
     borderRadius: 30,
@@ -125,7 +100,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   playButtonText: {
-    color: '#4A4A4A',
+    color: '#FFF',
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
