@@ -2,6 +2,7 @@
 import { Animated, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { useState, useEffect, useRef } from 'react';
 import { promptSections, mixedSection } from '../data/promptsData'; // Import the data
+import { PaperBackground } from './PaperBackground';
 
 export function PromptArea({ useTimer, durationInMinutes, onExit, selectedSection }) {
     const [prompt, setPrompt] = useState('');
@@ -81,21 +82,25 @@ export function PromptArea({ useTimer, durationInMinutes, onExit, selectedSectio
     };
 
     return (
-        <View style={styles.container}>
-            <Animated.View style={[{ opacity }, styles.view]}>
-                <Text style={styles.prompt}>{prompt || "Loading prompts..."}</Text>
-                {useTimer && secondsLeft > -1 && (
-                <Text style={styles.timerText}>{formatTime(secondsLeft)}</Text>
-                )}
-            </Animated.View>
-            <TouchableOpacity style={styles.button} onPress={onPress}>
-                <Text style={styles.buttonText}>Next Prompt</Text>
-            </TouchableOpacity>
-            {/* Change this button to use the new onExit prop */}
-            <TouchableOpacity style={styles.button} onPress={onExit}>
-                <Text style={styles.buttonText}>Home Screen</Text>
-            </TouchableOpacity>
-        </View>
+      <View style={styles.container}>
+        <PaperBackground />
+
+        <Animated.View style={[{ opacity }, styles.view]}>
+          <Text style={styles.prompt}>{prompt || "Loading prompts..."}</Text>
+          {useTimer && secondsLeft > -1 && (
+          <Text style={styles.timerText}>{formatTime(secondsLeft)}</Text>
+          )}
+        </Animated.View>
+
+        <TouchableOpacity style={styles.button} onPress={onPress}>
+          <Text style={styles.buttonText}>Next Prompt</Text>
+        </TouchableOpacity>
+
+        {/* Change this button to use the new onExit prop */}
+        <TouchableOpacity style={styles.button} onPress={onExit}>
+          <Text style={styles.buttonText}>Home Screen</Text>
+        </TouchableOpacity>
+      </View>
     );
 };
 

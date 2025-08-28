@@ -1,6 +1,7 @@
 // components/SectionScreen.js
 import { StyleSheet, Text, View, TouchableOpacity, FlatList } from 'react-native';
 import { promptSections, mixedSection } from '../data/promptsData'; // Import the data we created
+import { PaperBackground } from './PaperBackground';
 
 export function SectionScreen({ onSelectSection, onBack }) {
   // Combine the mixed section with the categorized sections
@@ -18,6 +19,8 @@ export function SectionScreen({ onSelectSection, onBack }) {
 
   return (
     <View style={styles.container}>
+      <PaperBackground />
+
       <Text style={styles.title}>Choose Your Adventure</Text>
       <Text style={styles.subtitle}>Select a category of prompts to get started.</Text>
       
@@ -85,6 +88,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
     marginVertical: 10,
+    bottom: 40,
   },
   backButtonText: {
     color: '#fff',
