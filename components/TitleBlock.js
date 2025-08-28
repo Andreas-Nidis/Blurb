@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   playButton: {
-    backgroundColor: '#4A8A5F',
+    backgroundColor: '#FAF9F6',
     paddingVertical: 15,
     paddingHorizontal: 30,
     borderRadius: 30,
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   playButtonText: {
-    color: '#FFF',
+    color: '#4A4A4A',
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',

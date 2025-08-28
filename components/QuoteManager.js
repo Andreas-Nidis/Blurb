@@ -12,6 +12,7 @@ const QUOTES = [
   { text: "Words are our most inexhaustible source of magic.", author: "J.K. Rowling" },
   { text: "A book is a dream that you hold in your hand.", author: "Neil Gaiman" },
   { text: "There is no friend as loyal as a book.", author: "Ernest Hemingway" },
+  { text: "Your word is your bond", author: "My mom" },
 ];
 
 export function QuoteManager() {
@@ -74,10 +75,11 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 50,
     alignItems: 'center',
+    width: 300,
   },
   quoteText: {
     color: '#FFDEAD',
-    fontSize: 16,
+    fontSize: 14,
     fontStyle: 'italic',
     textAlign: 'center',
     marginBottom: 8,
@@ -88,7 +90,8 @@ const styles = StyleSheet.create({
   },
   quoteAuthor: {
     color: '#FFDEAD',
-    fontSize: 14,
+    left: 80,
+    fontSize: 12,
     textAlign: 'center',
     fontFamily: 'LibreBaskerville',
     textShadowColor: 'rgba(0, 0, 0, 0.3)',
