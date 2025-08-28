@@ -23,7 +23,7 @@ export function Timer({ setUseTimer, useTimer, setDurationInMinutes }) {
         </TouchableOpacity>
       </View>
       :
-      <TouchableOpacity style={[styles.button, {backgroundColor: 'red'}]} onPress={() => setUseTimer((prev) => !prev)}>
+      <TouchableOpacity style={[styles.button, {backgroundColor: '#ff0000ff'}]} onPress={() => setUseTimer((prev) => !prev)}>
         <Text style={styles.showText}>Timer Off</Text>
       </TouchableOpacity>}
     </View>
@@ -38,7 +38,6 @@ const styles = StyleSheet.create({
   },
   timerRow: {
     flexDirection: 'row',
-    width: '100%',
   },
   button: {
     backgroundColor: 'gray',

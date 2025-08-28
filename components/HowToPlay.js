@@ -19,12 +19,16 @@ export function HowToPlay(props) {
             </Text>
 
             <Text style={styles.step}>
-              <Text style={styles.bold}>Step 1:</Text> Tap to Start{'\n'}
-              One person taps the screen to receive a prompt.
+              <Text style={styles.bold}>Step 1:</Text> Tap Start
             </Text>
 
             <Text style={styles.step}>
-              <Text style={styles.bold}>Step 2:</Text> Pick a Book{'\n'}
+              <Text style={styles.bold}>Step 2:</Text> Pick a Category{'\n'}
+              Choose a category from the list, or tap Mixed Bag for random picks from all categories.
+            </Text>
+
+            <Text style={styles.step}>
+              <Text style={styles.bold}>Step 3:</Text> Pick out Books!{'\n'}
               Both players search the shelves for a book that best fits the prompt.
             </Text>
 
@@ -58,7 +62,6 @@ export function HowToPlay(props) {
 
 const styles = StyleSheet.create({
   overview: {
-    // flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -79,7 +82,6 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#FAF9F6',
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     margin: 1,

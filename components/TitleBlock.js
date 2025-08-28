@@ -49,13 +49,14 @@ export function TitleBlock({ setUseTimer, useTimer, setDurationInMinutes, onStar
           outputRange: [30, 0]
         })}] 
       }]}>
-        {/* Play button */}
-        <TouchableOpacity onPress={onStart} style={styles.playButton}>
-          <Text style={styles.playButtonText}>Begin Adventure</Text>
-        </TouchableOpacity>
 
         {/* Buttons container */}
         <View style={styles.buttonContainer}>
+          {/* Play button */}
+          <TouchableOpacity onPress={onStart} style={styles.playButton}>
+            <Text style={styles.playButtonText}>Start</Text>
+          </TouchableOpacity>
+
           <HowToPlay modalVisible={modalVisible} setModalVisible={setModalVisible} />
           <Timer 
             setUseTimer={setUseTimer} 
@@ -87,12 +88,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 20,
   },
+  buttonContainer: {
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    width: '100%',
+    maxWidth: 300,
+    height: 250,
+  },
   playButton: {
+    width: 120,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
     backgroundColor: '#FAF9F6',
     paddingVertical: 15,
     paddingHorizontal: 30,
     borderRadius: 30,
-    marginBottom: 30,
     shadowColor: '#000',
     shadowOffset: { height: 4, width: 0 },
     shadowOpacity: 0.3,
@@ -104,13 +116,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '100%',
-    maxWidth: 300,
-    marginTop: 20,
   },
   bookStack: {
     position: 'absolute',

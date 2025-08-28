@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import { Entypo } from 'react-native-vector-icons';
 
 export function BookmarkRibbon() {
-  const dropAnim = useRef(new Animated.Value(-100)).current;
+  const dropAnim = useRef(new Animated.Value(-250)).current;
 
   useEffect(() => {
     Animated.timing(dropAnim, {

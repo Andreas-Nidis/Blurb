@@ -72,7 +72,7 @@ export function QuoteManager() {
 
 const styles = StyleSheet.create({
   quoteContainer: {
-    marginTop: 5,
+    marginTop: 150,
     marginBottom: 50,
     alignItems: 'center',
     width: 300,
